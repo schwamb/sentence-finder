@@ -54,6 +54,8 @@
             <script>
                 d3.select("#predict").on("click", function changeIt(){
                 var text = d3.select("#msg").node().value;
+                var exclamation = text.replace("!", ".");
+                var question = exclamation.replace("?", ".")
                 var sentences = text.split('.')
                 console.log(sentences);
                 var y = 0
