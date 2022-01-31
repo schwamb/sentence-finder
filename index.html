@@ -56,8 +56,9 @@
                 var text = d3.select("#msg").node().value;
                 var spaces = text.replace(/(\r\n|\n|\r)/gm, " ");
                 var exclamation = spaces.replace(/(!)/g, ".");
-                let question = exclamation.replace(/\?/g,'.')
-                var sentences = question.split('.')
+                var question = exclamation.replace(/\?/g,'.');
+                var hyphens = question.replace(/(--)/g, ".");
+                var sentences = hyphens.split('.')
                 console.log(sentences);
                 var y = 0
                 var wc_sentence = []
