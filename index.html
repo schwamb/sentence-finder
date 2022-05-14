@@ -16,6 +16,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="https://d3js.org/d3.v4.js"></script>
         <script src="https://d3js.org/d3.v4.js"></script>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
         <link rel="stylesheet" href="style.css" media="screen">
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -29,11 +31,12 @@
         <title>Longest Sentence Finder</title>
     </head>
 
+
     <body>
         <div class="jumbotron text-center">
             <h1>Longest Sentence Finder</h1>
             <p> Welcome to the Longest Senctence Finder!</br>
-                Paste in any text, and this app will tell you what the longest sentence is and how long it is.</p> 
+                Paste in any text, and this app will tell you what the longest sentence is and how long it is, as well as how many sentences are in your fic.</p> 
           </div>
         <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="" id="logo"> Longest Sentence Finder</a>
@@ -49,22 +52,37 @@
                 </form>
                 </div>
                 <!-- </div> -->
-
-            </br>   
-            </br>            
-            <div class="row">
                 <div class="col-sm-4">
-            <button onclick="changeIt()" id = "predict" class="btn btn-primary btn-block btn-large">Find My Sentence!</button>
+                    <button onclick="changeIt()" id = "predict" class="btn btn-primary btn-block btn-large">Find My Longest Sentence!</button>
+                </div>
+                <div class="col-sm-4">
+                    <button onclick="numberIt()" id = "predict3" class="btn btn-primary btn-block btn-large">How many sentences long is my fic?</button>
+                </div>
+            </br>
+        </br>
+        <div>
+            <form>
+                <div class="form-group">
+                <textarea class="form-control" id="msg2" rows="10">Input a number here to find that number sentence in your fic!</textarea>
+                <!-- <textarea type="text" class="inputField" id="msg" cols="40" rows="5">Paste your text here!</textarea> -->
+            </form>
+        </div>
+          
+            <!-- <div class="row"> -->
+                <div class="col-sm-4"> 
+            <button onclick="findIt()" id = "predict2" class="btn btn-primary btn-block btn-large">Find My Nth Sentence!</button>
             <!-- <button type="submit" id = "predict" class="btn btn-primary btn-block btn-large">Predict</button>
              -->
-             
+             </div>
             </br>
            </br>
+           
 
             <div id = "prediction"><br>
             <script>
                 d3.select("#predict").on("click", function changeIt(){
                 var text = d3.select("#msg").node().value;
+                // var number = (parseInt(d3.select("#msg2").node().value)-1);
                 var spaces = text.replace(/(\r\n|\n|\r)/gm, " ");
                 var exclamation = spaces.replace(/(!)/g, ".");
                 var question = exclamation.replace(/\?/g,'.');
@@ -87,36 +105,143 @@
                 var longest = (Math.max.apply(null, wc_sentence))
                 var location = wc_sentence.indexOf(longest)
                 var longest_sentence=words_only_list[location]
+                // var found = words_only_list[number]
+                // var foundStr = found.join(" ")
                 console.log((longest_sentence))
                 var listToStr = longest_sentence.join(" ")
                 console.log(listToStr)
                 // document.write(longest)
                 document.write('Your longest sentence is ' + longest +' words long.')
                 document.write("<br>");
+                document.write("This is your longest senetence:")
                 document.write(listToStr);
+                // document.write("<br>");
+                // document.write("<br>");
+                // document.write('Your fic has ' + (words_only_list.length-1) + 'sentences.')
+                // document.write("<br>");
+                // document.write(foundStr)
                 document.write("<br>");
-                document.write("<br>");
-                document.write("Refresh to go again!");
-                
+                var a = document.createElement('a');
+                    var linkText = document.createTextNode("my title text");
+                    a.appendChild(linkText);
+                    a.title = "Click here to go again!";
+                    a.href = "https://sentence-finder.herokuapp.com/";
+                    document.body.appendChild(a);
             }
             )
-            </script>    
-            </div>
+            </script>
+              <div id = "prediction"><br>
+                <script>
+                    d3.select("#predict3").on("click", function numberIt(){
+                    var text = d3.select("#msg").node().value;
+                    // var number = (parseInt(d3.select("#msg2").node().value)-1);
+                    var spaces = text.replace(/(\r\n|\n|\r)/gm, " ");
+                    var exclamation = spaces.replace(/(!)/g, ".");
+                    var question = exclamation.replace(/\?/g,'.');
+                    var hyphens = question.replace(/(--)/g, ".");
+                    var sentences = hyphens.split('.')
+                    console.log(sentences);
+                    var y = 0
+                    var wc_sentence = []
+                    var words_only_list = []
+                    for (i = 0; i < sentences.length; i++) {
+                        var words = sentences[y].split(" ")
+                        let forDeletion = ['', '—', ' ']
+                        var words_only = words.filter(item => !forDeletion.includes(item))
+                        var counts = words_only.length
+                        words_only_list.push(words_only)
+                        wc_sentence.push(counts)
+                        y = y + 1
+                    }
+                    
+                    var longest = (Math.max.apply(null, wc_sentence))
+                    var location = wc_sentence.indexOf(longest)
+                    var longest_sentence=words_only_list[location]
+                    // var found = words_only_list[number]
+                    // var foundStr = found.join(" ")
+                    console.log((longest_sentence))
+                    var listToStr = longest_sentence.join(" ")
+                    console.log(listToStr)
+                    // document.write(longest)
+                    // document.write('Your longest sentence is ' + longest +' words long.')
+                    // document.write("<br>");
+                    // document.write(listToStr);
+                    // document.write("<br>");
+                    // document.write("<br>");
+                    document.write('Your fic has ' + (words_only_list.length-1) + ' sentences.')
+                    // document.write("<br>");
+                    // document.write(foundStr)
+                    document.write("<br>");
+                    var a = document.createElement('a');
+                    var linkText = document.createTextNode("my title text");
+                    a.appendChild(linkText);
+                    a.title = "Click here to go again!";
+                    a.href = "https://sentence-finder.herokuapp.com/";
+                    document.body.appendChild(a);
+                }
+                )
+                </script>
+            <div id = "prediction"><br>
+                <script>
+                    d3.select("#predict2").on("click", function findIt(){
+                    var text = d3.select("#msg").node().value;
+                    var number = (parseInt(d3.select("#msg2").node().value)-1);
+                    var spaces = text.replace(/(\r\n|\n|\r)/gm, " ");
+                    var exclamation = spaces.replace(/(!)/g, ".");
+                    var question = exclamation.replace(/\?/g,'.');
+                    var hyphens = question.replace(/(--)/g, ".");
+                    var sentences = hyphens.split('.')
+                    console.log(sentences);
+                    var y = 0
+                    var wc_sentence = []
+                    var words_only_list = []
+                    for (i = 0; i < sentences.length; i++) {
+                        var words = sentences[y].split(" ")
+                        let forDeletion = ['', '—', ' ']
+                        var words_only = words.filter(item => !forDeletion.includes(item))
+                        var counts = words_only.length
+                        words_only_list.push(words_only)
+                        wc_sentence.push(counts)
+                        y = y + 1
+                    }
+                    
+                    var longest = (Math.max.apply(null, wc_sentence))
+                    var location = wc_sentence.indexOf(longest)
+                    var longest_sentence=words_only_list[location]
+                    var found = words_only_list[number]
+                    var foundStr = found.join(" ")
+                    console.log((longest_sentence))
+                    var listToStr = longest_sentence.join(" ")
+                    console.log(listToStr)
+                    // document.write(longest)
+                    // document.write('Your longest sentence is ' + longest +' words long.')
+                    // document.write("<br>");
+                    // document.write(listToStr);
+                    // document.write("<br>");
+                    // document.write("<br>");
+                    // document.write('Your fic has ' + (words_only_list.length-1) + 'sentences.')
+                    // document.write("<br>");
+                    document.write(foundStr)
+                    document.write("<br>");
+                    // document.write("Refresh to go again!");
+                    var a = document.createElement('a');
+                    var linkText = document.createTextNode("my title text");
+                    a.appendChild(linkText);
+                    a.title = "Click here to go again!";
+                    a.href = "https://sentence-finder.herokuapp.com/";
+                    document.body.appendChild(a);
+                }
+                )
+                </script>
+
             </div>
             </div>
 
                 </div>
             </div>
         </div>
-        <!-- <div class = "line-chart"></div> -->
         </div>
 
-
-
-        <!-- <script src="../static/js/logic.js"></script> -->
-        <!-- <script src="../static/js/line-chart.js"></script> -->
-        <!-- <script src="luxon.js"></script>
-        <script>luxon.DateTime.now();</script> -->
     </div>
     </body>
 
